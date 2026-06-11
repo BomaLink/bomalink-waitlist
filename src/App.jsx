@@ -258,7 +258,7 @@ const LandingPage = () => {
                     {[
                       { id: "Tenant", label: "Looking to rent", icon: "🏠" },
                       { id: "Landlord", label: "Want to rent out", icon: "🏢" },
-                      { id: "I'm looking for a roomate", label: "I'm looking for a roomate", icon: "🤝" },
+                      { id: "I'm looking for a roomate", label: "Looking for a roomate", icon: "🤝" },
                       
                     ].map((opt) => (
                       <button
