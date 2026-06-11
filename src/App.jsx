@@ -393,7 +393,7 @@ const LandingPage = () => {
         <footer className={`py-12 px-6 text-center transition-colors duration-300 ${
           isDark ? "border-t border-slate-800 text-slate-500" : "border-t border-slate-200 text-slate-500"
         }`}>
-          <p>© 2024 BomaLink. Smarter Housing, Stronger Cities.</p>
+          <p>© 2026 BomaLink. Smarter Housing, Stronger Cities.</p>
         </footer>
       </div>
     </div>
