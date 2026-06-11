@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { ChevronDown, Home, Users, Shield, ArrowRight, Mail, Phone } from "lucide-react";
+import { ChevronDown, Home, Users, Shield, ArrowRight, Mail, Phone, Moon, Sun } from "lucide-react";
 import { toast } from "sonner";
 
 const LandingPage = () => {
@@ -11,12 +11,21 @@ const LandingPage = () => {
   const [submitted, setSubmitted] = useState(false);
   const [scrollY, setScrollY] = useState(0);
   const [activeAccordion, setActiveAccordion] = useState(0);
+  const [isDark, setIsDark] = useState(true);
 
   useEffect(() => {
     const handleScroll = () => setScrollY(window.scrollY);
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
+  useEffect(() => {
+    if (isDark) {
+      document.documentElement.classList.add("dark");
+    } else {
+      document.documentElement.classList.remove("dark");
+    }
+  }, [isDark]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -53,7 +62,7 @@ const LandingPage = () => {
         setName("");
         setPhone("");
         setInterest("tenant");
-        setTimeout(() => setSubmitted(false), 4000);
+        setTimeout(() => setSubmitted(false), 100000);
       } else {
         toast.error("Something went wrong. Try again.");
       }
@@ -68,7 +77,7 @@ const LandingPage = () => {
   const faqs = [
     {
       q: "When will BomaLink launch?",
-      a: "We're launching in Q2 2024! Early waitlist members get exclusive access and special perks.",
+      a: "We're launching in Q3 2024! Early waitlist members get exclusive access and special perks.",
     },
     {
       q: "Is it free to use?",
@@ -76,20 +85,28 @@ const LandingPage = () => {
     },
     {
       q: "What cities will BomaLink cover?",
-      a: "We're starting with Nairobi, Mombasa, and Kisumu, with expansion planned for all major Kenyan cities.",
+      a: "We're starting with Nairobi with expansion planned for all major Kenyan cities.",
     },
     {
       q: "How do you keep my data safe?",
       a: "We use bank-level encryption and comply with Kenya's Data Protection Act. Your privacy is our priority.",
     },
-    {
-      q: "Can I use it on mobile?",
-      a: "Absolutely! BomaLink is fully optimized for iOS and Android.",
-    },
   ];
 
+  const bgClass = isDark 
+    ? "bg-gradient-to-br from-slate-950 via-blue-950 to-slate-900" 
+    : "bg-gradient-to-br from-slate-50 via-blue-50 to-white";
+  
+  const textPrimaryClass = isDark ? "text-white" : "text-slate-900";
+  const textSecondaryClass = isDark ? "text-slate-300" : "text-slate-600";
+  const textMutedClass = isDark ? "text-slate-400" : "text-slate-500";
+  const cardBgClass = isDark ? "bg-slate-800/30" : "bg-white";
+  const cardBorderClass = isDark ? "border-slate-700/50" : "border-slate-200";
+  const inputBgClass = isDark ? "bg-slate-800/50" : "bg-slate-50";
+
   return (
-    <div className="overflow-hidden min-h-screen" style={{ background: "linear-gradient(135deg, #6E10A6 0%, #1C1C2E 50%, #0A0A0A 100%)" }}>
+    // <div className={`overflow-hidden min-h-screen ${bgClass} transition-colors duration-300`}>
+    <div className={`overflow-hidden min-h-screen transition-colors duration-300`} style={{background: isDark ? "linear-gradient(135deg, #6E10A6 0%, #1C1C2E 50%, #0A0A0A 100%)" : "linear-gradient(135deg, #f8f7ff 0%, #f0f4ff 50%, #ffffff 100%)"}}>
       {/* Animated background elements */}
       <div className="fixed inset-0 overflow-hidden pointer-events-none">
         <div 
@@ -105,127 +122,95 @@ const LandingPage = () => {
       {/* Content */}
       <div className="relative z-10">
         {/* Navigation */}
-        <nav className="fixed top-0 w-full backdrop-blur-md border-b z-50" style={{ background: "rgba(26, 26, 46, 0.8)", borderColor: "#FF007F" }}>
+        <nav className={`fixed top-0 w-full backdrop-blur-md border-b z-50 transition-colors duration-300 ${
+          isDark ? "bg-slate-950/80 border-slate-800" : "bg-white/80 border-slate-200"
+        }`}>
           <div className="max-w-6xl mx-auto px-6 py-4 flex justify-between items-center">
             <div className="text-2xl font-bold flex items-center gap-2">
-              <div className="text-3xl font-black" style={{ color: "#FF007F" }}>B</div>
+              {/* <div className="text-3xl font-black" style={{ color: "#FF007F" }}>B</div> */}
+              <img 
+                src="/bomalink-logo-png-Photoroom.png" 
+                alt="BomaLink logo"
+                style={{ width: "40px", height: "40px", objectFit: "contain" }}
+              />
               <div className="flex flex-col">
-                <span style={{ color: "#FFFFFF", fontSize: "14px", fontWeight: "bold", lineHeight: "1.2" }}>BOMA</span>
-                <span style={{ color: "#FFFFFF", fontSize: "14px", fontWeight: "bold", lineHeight: "1.2" }}>LINK</span>
+                <span style={{ color: isDark ? "#FFFFFF" : "#000000", fontSize: "20px", fontWeight: "bold", lineHeight: "1.2" }}>BomaLink</span>
+                {/* <span style={{ color: isDark ? "#FFFFFF" : "#000000", fontSize: "14px", fontWeight: "bold", lineHeight: "1.2" }}>LINK</span> */}
               </div>
-              <div className="h-6 w-1 ml-2" style={{ background: "#99CA43" }} />
+              {/* <div className="h-6 w-1 ml-2" style={{ background: "#99CA43" }} /> */}
             </div>
-            <div className="text-sm text-gray-300">Coming Soon</div>
+            <button
+              onClick={() => setIsDark(!isDark)}
+              className={`p-2 rounded-lg border transition ${
+                isDark 
+                  ? "bg-slate-800/50 border-slate-700 hover:bg-slate-700/50" 
+                  : "bg-slate-100 border-slate-300 hover:bg-slate-200"
+              }`}
+              title={isDark ? "Switch to light mode" : "Switch to dark mode"}
+            >
+              {isDark ? (
+                <Sun className="w-5 h-5" style={{ color: "#99CA43" }} />
+              ) : (
+                <Moon className="w-5 h-5" style={{ color: "#FF007F" }} />
+              )}
+            </button>
           </div>
         </nav>
 
-        {/* Hero Section */}
-        <section className="pt-32 pb-20 px-6 max-w-6xl mx-auto">
-          <div className="grid lg:grid-cols-2 gap-12 items-center">
-            {/* Left: Copy */}
-            <div className="space-y-8">
-              <div className="space-y-4">
-                <div className="inline-block px-4 py-2 rounded-full text-sm font-medium border" 
-                  style={{ background: "rgba(255, 0, 127, 0.2)", borderColor: "#FF007F", color: "#FF007F" }}>
-                  ✨ Smarter Housing, Stronger Cities
-                </div>
-                <h1 className="text-5xl lg:text-6xl font-black leading-tight" style={{ color: "#FFFFFF" }}>
-                  Find Your Perfect Home,{" "}
-                  <span style={{ color: "#FF007F" }}>
-                    Stress-Free
-                  </span>
-                </h1>
+        {/* Main Section - Form Centered */}
+        <section className="pt-28 pb-16 px-6 min-h-screen flex items-center justify-center">
+          <div className="w-full max-w-2xl">
+            {/* Header */}
+            <div className="text-center space-y-4 mb-12">
+              <div className="inline-block px-4 py-2 rounded-full text-sm font-medium border" 
+                style={{ 
+                  background: isDark ? "rgba(255, 0, 127, 0.2)" : "rgba(255, 0, 127, 0.1)",
+                  borderColor: "#FF007F", 
+                  color: "#FF007F" 
+                }}
+                >
+                Smarter Housing, Stronger Cities
               </div>
-
-              <p className="text-lg leading-relaxed" style={{ color: "#D0D0D0" }}>
-                BomaLink connects tenants and landlords across Kenya with smart matching, secure payments, and transparent communication. No middlemen. No hassle.
+              <h1 className={`text-4xl md:text-5xl font-black leading-tight ${textPrimaryClass}`}>
+                Find Your Perfect Home
+              </h1>
+              <p className={`text-lg ${textSecondaryClass}`}>
+                Get early access to BomaLink. Join 1000+ people waiting to revolutionize renting in Kenya.
               </p>
-
-              <div className="flex gap-4 pt-4">
-                <div className="flex items-center gap-3" style={{ color: "#99CA43" }}>
-                  <div className="w-2 h-2 rounded-full" style={{ background: "#99CA43" }} />
-                  <span>Transparent pricing</span>
-                </div>
-                <div className="flex items-center gap-3" style={{ color: "#99CA43" }}>
-                  <div className="w-2 h-2 rounded-full" style={{ background: "#99CA43" }} />
-                  <span>Verified profiles</span>
-                </div>
-              </div>
-
-              {/* Stats */}
-              <div className="grid grid-cols-3 gap-4 pt-8" style={{ borderTop: "1px solid rgba(255, 0, 127, 0.2)" }}>
-                <div>
-                  <p className="text-2xl font-black" style={{ color: "#FF007F" }}>1000+</p>
-                  <p className="text-sm" style={{ color: "#999" }}>Waitlist members</p>
-                </div>
-                <div>
-                  <p className="text-2xl font-black" style={{ color: "#99CA43" }}>50+</p>
-                  <p className="text-sm" style={{ color: "#999" }}>Cities covered</p>
-                </div>
-                <div>
-                  <p className="text-2xl font-black" style={{ color: "#FF007F" }}>Q2 2024</p>
-                  <p className="text-sm" style={{ color: "#999" }}>Launch date</p>
-                </div>
-              </div>
             </div>
 
-            {/* Right: Visual */}
-            <div className="relative h-96 lg:h-full">
-              <div className="absolute inset-0 rounded-2xl" style={{ background: "linear-gradient(135deg, rgba(255, 0, 127, 0.2), rgba(153, 202, 67, 0.2))" }} />
-              <div className="relative h-full rounded-2xl border-2 overflow-hidden flex items-center justify-center" style={{ borderColor: "#FF007F" }}>
-                <div className="text-center space-y-4 p-8">
-                  <Home className="w-16 h-16 mx-auto" style={{ color: "#FF007F" }} />
-                  <p className="text-xl font-bold" style={{ color: "#FFFFFF" }}>Join thousands finding home</p>
-                  <p style={{ color: "#999" }}>Get early access and exclusive perks</p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* Scroll indicator */}
-        <div className="flex justify-center animate-bounce">
-          <ChevronDown className="w-6 h-6" style={{ color: "#FF007F" }} />
-        </div>
-
-        {/* Waitlist Section */}
-        <section id="waitlist" className="py-20 px-6">
-          <div className="max-w-3xl mx-auto">
+            {/* Form Card */}
             {submitted ? (
-              <div className="text-center space-y-6 py-12">
+              <div className={`${cardBgClass} border-2 border-slate-700/50 rounded-2xl p-8 md:p-12 text-center space-y-6 backdrop-blur-sm`}>
                 <div className="inline-flex items-center justify-center w-16 h-16 rounded-full border-2" style={{ background: "rgba(153, 202, 67, 0.2)", borderColor: "#99CA43" }}>
                   <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" style={{ color: "#99CA43" }}>
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                   </svg>
                 </div>
-                <h2 className="text-3xl font-black" style={{ color: "#FFFFFF" }}>You're in! 🎉</h2>
-                <p className="text-lg" style={{ color: "#D0D0D0" }}>
-                  Check your email for updates. We'll notify you the moment BomaLink launches.
-                </p>
+                <div>
+                  <h2 className={`text-3xl font-black mb-2 ${textPrimaryClass}`}>You're in! 🎉</h2>
+                  <p className={`${textSecondaryClass}`}>
+                    Check your email for updates. We'll notify you the moment BomaLink launches.
+                  </p>
+                </div>
               </div>
             ) : (
-              <form onSubmit={handleSubmit} className="space-y-6">
-                <div className="text-center space-y-3 mb-8">
-                  <h2 className="text-3xl font-black" style={{ color: "#FFFFFF" }}>Get Early Access</h2>
-                  <p style={{ color: "#999" }}>Be the first to use BomaLink. Launch perks included.</p>
-                </div>
-
+              <form onSubmit={handleSubmit} className={`${cardBgClass} border-2 ${cardBorderClass} rounded-2xl p-8 md:p-10 space-y-5 backdrop-blur-sm`}>
                 {/* Email */}
                 <div>
-                  <label className="block text-sm font-bold mb-3" style={{ color: "#D0D0D0" }}>Email *</label>
+                  <label className={`block text-sm font-bold mb-3 ${textPrimaryClass}`}>Email *</label>
                   <div className="relative">
-                    <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 pointer-events-none" style={{ color: "#666" }} />
+                    <Mail className={`absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 pointer-events-none ${isDark ? "text-slate-600" : "text-slate-400"}`} />
                     <input
                       type="email"
                       placeholder="you@example.com"
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
-                      className="w-full pl-12 pr-4 py-3 rounded-lg border-2 text-white placeholder-gray-500 focus:outline-none transition"
-                      style={{ 
-                        background: "rgba(255, 255, 255, 0.05)",
-                        borderColor: "#FF007F",
-                        focusBorderColor: "#99CA43"
-                      }}
+                      className={`w-full pl-12 pr-4 py-3 rounded-lg border-2 transition focus:outline-none ${
+                        isDark
+                          ? "bg-slate-800/50 border-slate-700 text-white placeholder-slate-500 focus:border-cyan-500"
+                          : "bg-slate-50 border-slate-300 text-slate-900 placeholder-slate-400 focus:border-cyan-500"
+                      }`}
                       required
                     />
                   </div>
@@ -233,58 +218,62 @@ const LandingPage = () => {
 
                 {/* Name */}
                 <div>
-                  <label className="block text-sm font-bold mb-3" style={{ color: "#D0D0D0" }}>Name (optional)</label>
+                  <label className={`block text-sm font-bold mb-3 ${textPrimaryClass}`}>Name (optional)</label>
                   <input
                     type="text"
                     placeholder="John Doe"
                     value={name}
                     onChange={(e) => setName(e.target.value)}
-                    className="w-full px-4 py-3 rounded-lg border-2 text-white placeholder-gray-500 focus:outline-none transition"
-                    style={{ 
-                      background: "rgba(255, 255, 255, 0.05)",
-                      borderColor: "#FF007F"
-                    }}
+                    className={`w-full px-4 py-3 rounded-lg border-2 transition focus:outline-none ${
+                      isDark
+                        ? "bg-slate-800/50 border-slate-700 text-white placeholder-slate-500 focus:border-cyan-500"
+                        : "bg-slate-50 border-slate-300 text-slate-900 placeholder-slate-400 focus:border-cyan-500"
+                    }`}
                   />
                 </div>
 
                 {/* Phone */}
                 <div>
-                  <label className="block text-sm font-bold mb-3" style={{ color: "#D0D0D0" }}>Phone (optional)</label>
+                  <label className={`block text-sm font-bold mb-3 ${textPrimaryClass}`}>Phone (optional)</label>
                   <div className="relative">
-                    <Phone className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 pointer-events-none" style={{ color: "#666" }} />
+                    <Phone className={`absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 pointer-events-none ${isDark ? "text-slate-600" : "text-slate-400"}`} />
                     <input
                       type="tel"
                       placeholder="+254 7XX XXX XXX"
                       value={phone}
                       onChange={(e) => setPhone(e.target.value)}
-                      className="w-full pl-12 pr-4 py-3 rounded-lg border-2 text-white placeholder-gray-500 focus:outline-none transition"
-                      style={{ 
-                        background: "rgba(255, 255, 255, 0.05)",
-                        borderColor: "#FF007F"
-                      }}
+                      className={`w-full pl-12 pr-4 py-3 rounded-lg border-2 transition focus:outline-none ${
+                        isDark
+                          ? "bg-slate-800/50 border-slate-700 text-white placeholder-slate-500 focus:border-cyan-500"
+                          : "bg-slate-50 border-slate-300 text-slate-900 placeholder-slate-400 focus:border-cyan-500"
+                      }`}
                     />
                   </div>
                 </div>
 
                 {/* Interest */}
                 <div>
-                  <label className="block text-sm font-bold mb-4" style={{ color: "#D0D0D0" }}>I'm interested in *</label>
+                  <label className={`block text-sm font-bold mb-4 ${textPrimaryClass}`}>I'm interested in *</label>
                   <div className="grid grid-cols-3 gap-3">
                     {[
-                      { id: "tenant", label: "Looking to rent", icon: "🏠" },
-                      { id: "landlord", label: "Want to rent out", icon: "🏢" },
-                      { id: "both", label: "Both", icon: "🔄" },
+                      { id: "Tenant", label: "Looking to rent", icon: "🏠" },
+                      { id: "Landlord", label: "Want to rent out", icon: "🏢" },
+                      { id: "I'm looking for a roomate", label: "I'm looking for a roomate", icon: "🤝" },
+                      
                     ].map((opt) => (
                       <button
                         key={opt.id}
                         type="button"
                         onClick={() => setInterest(opt.id)}
-                        className="p-4 rounded-lg border-2 transition font-bold text-sm"
-                        style={{
-                          background: interest === opt.id ? "rgba(255, 0, 127, 0.2)" : "rgba(255, 255, 255, 0.05)",
-                          borderColor: interest === opt.id ? "#FF007F" : "#333",
-                          color: interest === opt.id ? "#FF007F" : "#999"
-                        }}
+                        className={`p-4 rounded-lg border-2 transition font-bold text-sm ${
+                          interest === opt.id
+                            ? isDark
+                              ? "border-cyan-500 bg-cyan-500/20 text-cyan-300"
+                              : "border-cyan-500 bg-cyan-50 text-cyan-700"
+                            : isDark
+                            ? "border-slate-700 bg-slate-800/50 text-slate-400 hover:border-slate-600"
+                            : "border-slate-300 bg-slate-50 text-slate-600 hover:border-slate-400"
+                        }`}
                       >
                         <div className="text-2xl mb-2">{opt.icon}</div>
                         {opt.label}
@@ -304,18 +293,34 @@ const LandingPage = () => {
                   {!loading && <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition" />}
                 </button>
 
-                <p className="text-center text-xs" style={{ color: "#666" }}>
+                <p className={`text-center text-xs ${textMutedClass}`}>
                   No spam. Unsubscribe anytime. We respect your privacy.
                 </p>
               </form>
             )}
+
+            {/* Trust badges */}
+            <div className={`mt-12 grid grid-cols-3 gap-4 text-center ${isDark ? "text-slate-400" : "text-slate-600"}`}>
+              <div>
+                <p className="font-bold text-lg" style={{ color: "#FF007F" }}>1000+</p>
+                <p className="text-sm">Waitlist members</p>
+              </div>
+              <div>
+                <p className="font-bold text-lg" style={{ color: "#99CA43" }}>50+</p>
+                <p className="text-sm">Cities covered</p>
+              </div>
+              <div>
+                <p className="font-bold text-lg" style={{ color: "#FF007F" }}>Q2 2024</p>
+                <p className="text-sm">Launch date</p>
+              </div>
+            </div>
           </div>
         </section>
 
         {/* Features Section */}
-        <section className="py-20 px-6" style={{ background: "rgba(26, 26, 46, 0.5)" }}>
+        <section className={`py-20 px-6 ${isDark ? "bg-slate-900/50" : "bg-slate-100/50"} transition-colors duration-300`}>
           <div className="max-w-6xl mx-auto">
-            <h2 className="text-4xl font-black text-center mb-16" style={{ color: "#FFFFFF" }}>Why BomaLink?</h2>
+            <h2 className={`text-4xl font-black text-center mb-16 ${textPrimaryClass}`}>Why BomaLink?</h2>
 
             <div className="grid md:grid-cols-3 gap-8">
               {[
@@ -337,16 +342,15 @@ const LandingPage = () => {
               ].map((feature, i) => (
                 <div
                   key={i}
-                  className="p-8 rounded-2xl border-2 hover:border-opacity-100 transition space-y-4 group"
-                  style={{ 
-                    background: "rgba(255, 255, 255, 0.05)",
-                    borderColor: "#FF007F",
-                    borderOpacity: 0.3
-                  }}
+                  className={`p-8 rounded-2xl border-2 hover:border-opacity-100 transition space-y-4 ${
+                    isDark
+                      ? "bg-slate-800/30 border-slate-700/50 hover:border-slate-600"
+                      : "bg-white border-slate-200 hover:border-slate-300"
+                  }`}
                 >
                   <div style={{ color: "#FF007F" }}>{feature.icon}</div>
-                  <h3 className="text-xl font-bold" style={{ color: "#FFFFFF" }}>{feature.title}</h3>
-                  <p style={{ color: "#999" }}>{feature.desc}</p>
+                  <h3 className={`text-xl font-bold ${textPrimaryClass}`}>{feature.title}</h3>
+                  <p className={textSecondaryClass}>{feature.desc}</p>
                 </div>
               ))}
             </div>
@@ -356,29 +360,28 @@ const LandingPage = () => {
         {/* FAQ Section */}
         <section className="py-20 px-6">
           <div className="max-w-3xl mx-auto">
-            <h2 className="text-4xl font-black text-center mb-16" style={{ color: "#FFFFFF" }}>Frequently Asked Questions</h2>
+            <h2 className={`text-4xl font-black text-center mb-16 ${textPrimaryClass}`}>Frequently Asked Questions</h2>
 
             <div className="space-y-4">
               {faqs.map((faq, i) => (
                 <button
                   key={i}
                   onClick={() => setActiveAccordion(activeAccordion === i ? -1 : i)}
-                  className="w-full text-left p-6 rounded-lg border-2 hover:border-opacity-100 transition"
-                  style={{ 
-                    background: "rgba(255, 255, 255, 0.05)",
-                    borderColor: "#FF007F",
-                    borderOpacity: 0.3
-                  }}
+                  className={`w-full text-left p-6 rounded-lg border-2 hover:border-opacity-100 transition ${
+                    isDark
+                      ? "bg-slate-800/30 border-slate-700/50 hover:border-slate-600"
+                      : "bg-white border-slate-200 hover:border-slate-300"
+                  }`}
                 >
                   <div className="flex items-center justify-between">
-                    <h3 className="font-bold" style={{ color: "#FFFFFF" }}>{faq.q}</h3>
+                    <h3 className={`font-bold ${textPrimaryClass}`}>{faq.q}</h3>
                     <ChevronDown
-                      className={`w-5 h-5 transition-transform`}
+                      className="w-5 h-5 transition-transform"
                       style={{ color: "#FF007F", transform: activeAccordion === i ? "rotate(180deg)" : "rotate(0deg)" }}
                     />
                   </div>
                   {activeAccordion === i && (
-                    <p className="mt-4 leading-relaxed" style={{ color: "#999" }}>{faq.a}</p>
+                    <p className={`mt-4 leading-relaxed ${textSecondaryClass}`}>{faq.a}</p>
                   )}
                 </button>
               ))}
@@ -387,7 +390,9 @@ const LandingPage = () => {
         </section>
 
         {/* Footer */}
-        <footer className="py-12 px-6 text-center" style={{ borderTop: "1px solid rgba(255, 0, 127, 0.2)", color: "#666" }}>
+        <footer className={`py-12 px-6 text-center transition-colors duration-300 ${
+          isDark ? "border-t border-slate-800 text-slate-500" : "border-t border-slate-200 text-slate-500"
+        }`}>
           <p>© 2024 BomaLink. Smarter Housing, Stronger Cities.</p>
         </footer>
       </div>
