@@ -185,7 +185,7 @@ const LandingPage = () => {
           <div className="relative w-full max-w-2xl">
             {/* Header */}
             <div className="text-center space-y-4 mb-12">
-              <div
+              {/* <div
                 className="inline-block px-4 py-2 rounded-full text-sm font-medium border"
                 style={{
                   background: isDark ? "rgba(255, 0, 127, 0.2)" : "rgba(255, 0, 127, 0.1)",
@@ -194,6 +194,13 @@ const LandingPage = () => {
                 }}
               >
                 Smarter Housing, Stronger Cities
+              </div> */}
+              <div className="flex items-center justify-center gap-3">
+                {/* <div className="h-px w-8" style={{ background: "#FF007F" }} /> */}
+                <span className="text-sm font-semibold tracking-widest uppercase" style={{ color: "#FF007F" }}>
+                  Smarter Housing, Stronger Cities
+                </span>
+                {/* <div className="h-px w-8" style={{ background: "#FF007F" }} /> */}
               </div>
               <h1 className={`text-4xl md:text-5xl font-black leading-tight ${textPrimaryClass}`}>
                 Find Your Perfect Home
@@ -238,8 +245,8 @@ const LandingPage = () => {
                       onChange={(e) => setEmail(e.target.value)}
                       className={`w-full pl-12 pr-4 py-3 rounded-lg border-2 transition focus:outline-none ${
                         isDark
-                          ? "bg-slate-800/50 border-slate-700 text-white placeholder-slate-500 focus:border-[#99CA43]"
-                          : "bg-slate-50 border-slate-300 text-slate-900 placeholder-slate-400 focus:border-[#99CA43]"
+                          ? "bg-slate-800/50 border-slate-700 text-white placeholder-slate-500 focus:border-[#FF007F]"
+                          : "bg-slate-50 border-slate-300 text-slate-900 placeholder-slate-400 focus:border-[#FF007F]"
                       }`}
                       required
                     />
@@ -256,8 +263,8 @@ const LandingPage = () => {
                     onChange={(e) => setName(e.target.value)}
                     className={`w-full px-4 py-3 rounded-lg border-2 transition focus:outline-none ${
                       isDark
-                        ? "bg-slate-800/50 border-slate-700 text-white placeholder-slate-500 focus:border-[#99CA43]"
-                        : "bg-slate-50 border-slate-300 text-slate-900 placeholder-slate-400 focus:border-[#99CA43]"
+                        ? "bg-slate-800/50 border-slate-700 text-white placeholder-slate-500 focus:border-[#FF007F]"
+                        : "bg-slate-50 border-slate-300 text-slate-900 placeholder-slate-400 focus:border-[#FF007F]"
                     }`}
                   />
                 </div>
@@ -274,8 +281,8 @@ const LandingPage = () => {
                       onChange={(e) => setPhone(e.target.value)}
                       className={`w-full pl-12 pr-4 py-3 rounded-lg border-2 transition focus:outline-none ${
                         isDark
-                          ? "bg-slate-800/50 border-slate-700 text-white placeholder-slate-500 focus:border-[#99CA43]"
-                          : "bg-slate-50 border-slate-300 text-slate-900 placeholder-slate-400 focus:border-[#99CA43]"
+                          ? "bg-slate-800/50 border-slate-700 text-white placeholder-slate-500 focus:border-[#FF007F]"
+                          : "bg-slate-50 border-slate-300 text-slate-900 placeholder-slate-400 focus:border-[#FF007F]"
                       }`}
                     />
                   </div>
@@ -299,8 +306,8 @@ const LandingPage = () => {
                           className={`flex sm:flex-col items-center sm:justify-center gap-3 sm:gap-2 p-4 rounded-lg border-2 transition font-bold text-sm text-left sm:text-center ${
                             interest === opt.id
                               ? isDark
-                                ? "border-[#99CA43] bg-[#99CA43]/20 text-[#99CA43]"
-                                : "border-[#99CA43] bg-[#99CA43]/10 text-[#4B6B1A]"
+                                ? "border-[#FF007F] bg-[#3B82F6]/20 text-[#ffff]"
+                                : "border-[#FF007F] bg-[#3B82F6]/10 text-[#FF007F]"
                               : isDark
                               ? "border-[#FF007F]/20 bg-slate-800/50 text-slate-400 hover:border-[#FF007F]/50"
                               : "border-[#FF007F]/15 bg-slate-50 text-slate-600 hover:border-[#FF007F]/40"
